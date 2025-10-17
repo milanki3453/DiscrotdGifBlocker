@@ -61,25 +61,10 @@ To edit the list of users who control the bot’s filter, just change the IDs in
 
 **I hope this bot will be useful to you. Good luck and enjoy using it!**
 
-```import discord
+```
+import discord
 from discord.ext import commands
 import os
-
-from flask import Flask
-from threading import Thread
-
-app = Flask('')
-
-@app.route('/')
-def home():
-    return "I'm alive!"
-
-def run_flask():
-    app.run(host='0.0.0.0', port=8080)
-
-def keep_alive():
-    t = Thread(target=run_flask)
-    t.start()
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -90,7 +75,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 TARGET_USER_ID = None
 NOGIF_MODE = False
-ADMIN_IDS = [123456789012345678]  # <-- add your Discord ID here
+ADMIN_IDS = [123456789012345678]  # <-- Put your Discord ID(s) here
 
 def is_admin(ctx):
     return ctx.author.id in ADMIN_IDS
@@ -117,7 +102,7 @@ async def on_message(message):
 @bot.command(name='nogif')
 async def nogif(ctx, user: discord.Member):
     if not is_admin(ctx):
-        await ctx.send("You are not allowed to use this command!")
+        await ctx.send("You do not have permission to use this command!")
         return
     global TARGET_USER_ID, NOGIF_MODE
     TARGET_USER_ID = user.id
@@ -127,14 +112,13 @@ async def nogif(ctx, user: discord.Member):
 @bot.command(name='okgif')
 async def okgif(ctx):
     if not is_admin(ctx):
-        await ctx.send("You are not allowed to use this command!")
+        await ctx.send("You do not have permission to use this command!")
         return
     global NOGIF_MODE
     NOGIF_MODE = False
     await ctx.send("GIF deletion disabled.")
 
 if __name__ == '__main__':
-    keep_alive()
-    bot.run(os.getenv("DISCORD_TOKEN"))
+    bot.run("DISCORD_TOKEN"))
 ```
 
